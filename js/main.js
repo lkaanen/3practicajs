@@ -39,29 +39,29 @@ new Vue({
     },
   },
   methods: {
-    saveTasksToStorage: function() {
+    saveTasksToStorage() {
       const tasks = {
         plannedTasks: this.plannedTasks,
         inProgressTasks: this.inProgressTasks,
         testingTasks: this.testingTasks,
         completedTasks: this.completedTasks
       };
-  
+
       localStorage.setItem('tasks', JSON.stringify(tasks)); // Сохранение задач в локальное хранилище
     },
-    loadTasksFromStorage: function() {
+    loadTasksFromStorage() {
       const storedTasks = localStorage.getItem('tasks');
-  
+
       if (storedTasks) {
         const tasks = JSON.parse(storedTasks);
-  
+
         this.plannedTasks = tasks.plannedTasks || [];
         this.inProgressTasks = tasks.inProgressTasks || [];
         this.testingTasks = tasks.testingTasks || [];
         this.completedTasks = tasks.completedTasks || [];
       }
     },
-    addCard: function() {
+    addCard() {
       // Добавление новой задачи
       const newCard = {
         id: Date.now(),
@@ -75,16 +75,15 @@ new Vue({
       this.plannedTasks.push(newCard); // Добавление новой задачи в массив запланированных задач
       this.clearForm(); // Очистка формы
     },
-    checkYear: function() {
-      const yearInput = document.querySelector('input[type="date"]');
-      const enteredYear = yearInput.value.slice(0, 4); // Получение первых четырех символов
-  
+    checkYear() {
+      const enteredYear = this.newCardDeadline.slice(0, 4); // Получение первых четырех символов
+
       if (enteredYear.length !== 4) {
         // Вывести сообщение об ошибке или предпринять другие действия
         console.log('Ошибка! Год должен состоять из четырех цифр.');
       }
     },
-    editCard: function(card) {
+    editCard(card) {
       // Редактирование задачи
       const newTitle = prompt('Введите новый заголовок', card.title); // Запрос нового заголовка
       const newDescription = prompt('Введите новое описание', card.description); // Запрос нового описания
@@ -95,7 +94,7 @@ new Vue({
         card.lastEdited = new Date().toLocaleString();
       }
     },
-    deleteCard: function(card) {
+    deleteCard(card) {
       // Удаление задачи
       const column = this.findColumn(card);
 
@@ -103,25 +102,25 @@ new Vue({
         column.splice(column.indexOf(card), 1); // Удаление задачи из соответствующего массива
       }
     },
-    moveToInProgress: function(card) {
+    moveToInProgress(card) {
       // Перемещение задачи в статус "В процессе выполнения"
       this.plannedTasks.splice(this.plannedTasks.indexOf(card), 1); // Удаление задачи из массива запланированных задач
       card.lastEdited = new Date().toLocaleString();
       this.inProgressTasks.push(card); // Добавление задачи в массив задач в процессе выполнения
     },
-    moveToTesting: function(card) {
+    moveToTesting(card) {
       // Перемещение задачи в статус "На тестировании"
       this.inProgressTasks.splice(this.inProgressTasks.indexOf(card), 1); // Удаление задачи из массива задач в процессе выполнения
       card.lastEdited = new Date().toLocaleString();
       this.testingTasks.push(card); // Добавление задачи в массив задач на тестировании
     },
-    moveToCompleted: function(card) {
+    moveToCompleted(card) {
       // Перемещение задачи в статус "Выполнено"
       this.testingTasks.splice(this.testingTasks.indexOf(card), 1); // Удаление задачи из массива задач на тестировании
       card.lastEdited = new Date().toLocaleString();
       this.completedTasks.push(card); // Добавление задачи в массив выполненных задач
     },
-    returnToProgress: function(card) {
+    returnToProgress(card) {
       // Возврат задачи в статус "В процессе выполнения"
       const reason = prompt('Введите причину возврата', '');
 
@@ -132,20 +131,20 @@ new Vue({
         this.inProgressTasks.push(card); // Добавление задачи в массив задач в процессе выполнения
       }
     },
-    isDeadlineExpired: function(deadline) {
+    isDeadlineExpired(deadline) {
       // Проверка истек ли срок выполнения задачи
       const currentDate = new Date();
       const deadlineDate = new Date(deadline);
 
       return currentDate > deadlineDate;
     },
-    clearForm: function() {
+    clearForm() {
       // Очистка формы
       this.newCardTitle = '';
       this.newCardDescription = '';
       this.newCardDeadline = '';
     },
-    findColumn: function(card) {
+    findColumn(card) {
       // Поиск массива, в котором находится задача
       if (this.plannedTasks.includes(card)) {
         return this.plannedTasks; // Задача находится в массиве запланированных задач
