@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="./js/vue.js"></script>
-  <link rel="stylesheet" href="./css/style.css">
+  <title>kanban</title>
+  <script src="./js/vue.js"></script> <!-- Подключение библиотеки Vue.js -->
+  <link rel="stylesheet" href="./css/style.css"> <!-- Подключение CSS-стилей -->
 </head>
 <body>
-
- 
- 
   <div id="app">
     <div class="board">
       <div class="column">
         <h2>Запланированные задачи</h2>
         <div class="cards">
+          <!-- Отображение карточек запланированных задач -->
           <div v-for="card in plannedTasks" :key="card.id" class="card">
             <div class="card-header">
               <span class="timestamp">{{ card.lastEdited }}</span>
@@ -25,12 +23,12 @@
             <div class="card-content">
               <h3>{{ card.title }}</h3>
               <p>{{ card.description }}</p>
-              <p>Дэдлайн: {{ card.deadline }}</p>
+              <p>Дедлайн: {{ card.deadline }}</p>
             </div>
             <button @click="moveToInProgress(card)">Переместить в работу</button>
           </div>
         </div>
-        <form @submit.prevent="addCard">
+        <form @submit.prevent="addCard"> <!-- Форма для создания новой карточки -->
           <input v-model="newCardTitle" placeholder="Заголовок" required>
           <input v-model="newCardDescription" placeholder="Описание" required>
           <input type="date" v-model="newCardDeadline" @change="checkYear" required>
@@ -41,6 +39,7 @@
       <div class="column">
         <h2>Задачи в работе</h2>
         <div class="cards">
+          <!-- Отображение карточек задач в процессе выполнения -->
           <div v-for="card in inProgressTasks" :key="card.id" class="card">
             <div class="card-header">
               <span class="timestamp">{{ card.lastEdited }}</span>
@@ -50,7 +49,7 @@
             <div class="card-content">
               <h3>{{ card.title }}</h3>
               <p>{{ card.description }}</p>
-              <p>Дэдлайн: {{ card.deadline }}</p>
+              <p>Дедлайн: {{ card.deadline }}</p>
             </div>
             <button @click="moveToTesting(card)">Переместить в тестирование</button>
           </div>
@@ -60,6 +59,7 @@
       <div class="column">
         <h2>Тестирование</h2>
         <div class="cards">
+          <!-- Отображение карточек задач на тестировании -->
           <div v-for="card in testingTasks" :key="card.id" class="card">
             <div class="card-header">
               <span class="timestamp">{{ card.lastEdited }}</span>
@@ -69,7 +69,7 @@
             <div class="card-content">
               <h3>{{ card.title }}</h3>
               <p>{{ card.description }}</p>
-              <p>Дэдлайн: {{ card.deadline }}</p>
+              <p>Дедлайн: {{ card.deadline }}</p>
             </div>
             <button @click="moveToCompleted(card)">Переместить в выполненные</button>
             <p v-if="card.returnReason">Причина возврата: {{ card.returnReason }}</p>
@@ -81,17 +81,18 @@
       <div class="column">
         <h2>Выполненные задачи</h2>
         <div class="cards">
+          <!-- Отображение карточек выполненных задач -->
           <div v-for="card in completedTasks" :key="card.id" class="card">
             <div class="card-content">
               <h3 :class="{ 'expired': isDeadlineExpired(card.deadline) }">{{ card.title }}</h3>
               <p>{{ card.description }}</p>
-              <p>Дэдлайн: {{ card.deadline }}</p>
+              <p>Дедлайн: {{ card.deadline }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src="./js/main.js"></script>
+  <script src="./js/main.js"></script> <!-- Подключение основного скрипта -->
 </body>
 </html>
