@@ -39,6 +39,28 @@ new Vue({
     },
   },
   methods: {
+    saveTasksToStorage: function() {
+      const tasks = {
+        plannedTasks: this.plannedTasks,
+        inProgressTasks: this.inProgressTasks,
+        testingTasks: this.testingTasks,
+        completedTasks: this.completedTasks
+      };
+  
+      localStorage.setItem('tasks', JSON.stringify(tasks)); // Сохранение задач в локальное хранилище
+    },
+    loadTasksFromStorage: function() {
+      const storedTasks = localStorage.getItem('tasks');
+  
+      if (storedTasks) {
+        const tasks = JSON.parse(storedTasks);
+  
+        this.plannedTasks = tasks.plannedTasks || [];
+        this.inProgressTasks = tasks.inProgressTasks || [];
+        this.testingTasks = tasks.testingTasks || [];
+        this.completedTasks = tasks.completedTasks || [];
+      }
+    },
     addCard: function() {
       // Добавление новой задачи
       const newCard = {
