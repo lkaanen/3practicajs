@@ -6,13 +6,7 @@
 .column h2{
   text-align: center;
 }
-.column {
-  flex: 1 1 25%;
-  padding: 20px;
-  background-color: #969696;
-  border-radius: 5px;
-  margin: 10px;
-}
+
 
 .card {
   background-color: #fff;
